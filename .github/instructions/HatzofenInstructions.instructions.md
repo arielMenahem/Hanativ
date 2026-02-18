@@ -99,34 +99,50 @@ RTL-aligned form (`dir="rtl"`) with the following fields:
 **File:** `/api/create-order.js`
 
 ```js
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end();
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-  const { full_name, email, phone, address, city, zip_code } = req.body;
+  try {
+    const { full_name, email, phone, address, city, zip_code } = req.body;
 
-  await sql`
-    INSERT INTO orders (full_name, email, phone, address, city, zip_code)
-    VALUES (${full_name}, ${email}, ${phone}, ${address}, ${city}, ${zip_code})
-  `;
+    // Validate required fields
+    if (!full_name || !email || !phone || !address || !city) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
 
-  return res.status(200).json({
-    success: true,
-    paymentPhone: process.env.PAYMENT_PHONE_NUMBER,
-  });
+    // Connect to Neon database
+    const sql = neon(process.env.DATABASE_URL);
+
+    // Insert order into database
+    await sql`
+      INSERT INTO orders (full_name, email, phone, address, city, zip_code)
+      VALUES (${full_name}, ${email}, ${phone}, ${address}, ${city}, ${zip_code || ''})
+    `;
+
+    return res.status(200).json({
+      success: true,
+      paymentPhone: process.env.PAYMENT_PHONE_NUMBER,
+    });
+  } catch (error) {
+    console.error('Error creating order:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 }
 ```
 
-### Required Environment Variables (`.env` / Vercel Dashboard)
+### Required Environment Variables (Vercel Dashboard)
 | Variable | Description |
 |---|---|
-| `POSTGRES_URL` | Vercel Postgres connection string |
+| `DATABASE_URL` | Neon Postgres connection string (auto-set by Vercel) |
 | `PAYMENT_PHONE_NUMBER` | Phone number for Bit/PayBox payment |
 
 ### Install dependency
 ```bash
-npm install @vercel/postgres
+npm install @neondatabase/serverless
 ```
 
 ---
@@ -155,11 +171,28 @@ npm install @vercel/postgres
 
 1. Push code to GitHub repository
 2. Connect the repo to Vercel
-3. In Vercel Dashboard → Settings → Environment Variables, add:
-   - `POSTGRES_URL`
-   - `PAYMENT_PHONE_NUMBER`
-4. In Vercel Dashboard → Storage, create a Postgres database and run the SQL from Phase 1
-5. Deploy — Vercel auto-detects Vite and serverless functions in `/api`
+3. In Vercel Dashboard → **Storage** → **Create Database**
+   - Select **Neon** (Serverless Postgres) from the Marketplace
+   - Vercel automatically sets `DATABASE_URL` environment variable
+4. In Neon's SQL Editor (or via the Vercel dashboard), run:
+   ```sql
+   CREATE TABLE orders (
+       id SERIAL PRIMARY KEY,
+       full_name VARCHAR(255) NOT NULL,
+       email VARCHAR(255) NOT NULL,
+       phone VARCHAR(20) NOT NULL,
+       address TEXT NOT NULL,
+       city VARCHAR(100) NOT NULL,
+       zip_code VARCHAR(15),
+       payment_status VARCHAR(20) DEFAULT 'pending',
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   );
+   ```
+5. In Vercel Dashboard → **Settings** → **Environment Variables**, add:
+   - Variable name: `PAYMENT_PHONE_NUMBER`
+   - Value: Your Bit/PayBox phone number (e.g., `+333333`)
+   - Environment: Production, Preview, Development
+6. Deploy — Vercel auto-detects Vite and serverless functions in `/api`
 
 ---
 
