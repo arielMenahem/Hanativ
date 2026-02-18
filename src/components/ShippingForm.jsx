@@ -47,17 +47,17 @@ export default function ShippingForm({ onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir="rtl">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50" dir="rtl">
+      <div className="bg-white rounded-lg p-4 sm:p-6 md:p-8 max-w-md w-full relative max-h-[95vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 text-gray-500 hover:text-gray-700 text-2xl"
+          className="absolute top-2 left-2 sm:top-4 sm:left-4 text-gray-500 hover:text-gray-700 text-2xl sm:text-3xl"
           type="button"
         >
           ×
         </button>
 
-        <h2 className="text-2xl font-bold text-center mb-6" style={{ color: '#D4AF37' }}>
+        <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6" style={{ color: '#D4AF37' }}>
           טופס הזמנה
         </h2>
 

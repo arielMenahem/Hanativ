@@ -22,7 +22,7 @@ src/
   index.css        ← Global styles + background image
   main.jsx
 public/
-  background.png   ← Teal book-cover background image
+  background1.png   ← Teal book-cover background image
 api/
   create-order.js  ← (TO BE CREATED) Vercel serverless function
 .env               ← (TO BE CREATED) Environment variables

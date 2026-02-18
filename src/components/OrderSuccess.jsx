@@ -5,25 +5,25 @@ export default function OrderSuccess({ paymentPhone, bookPrice, onClose }) {
   const bitPaymentUrl = `bit://pay?phone=${encodeURIComponent(paymentPhone)}&amount=${bookPrice}&description=${encodeURIComponent('ספר הנתיב לצופן הבורא')}`;
   
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir="rtl">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50" dir="rtl">
+      <div className="bg-white rounded-lg p-4 sm:p-6 md:p-8 max-w-md w-full relative max-h-[95vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 text-gray-500 hover:text-gray-700 text-2xl"
+          className="absolute top-2 left-2 sm:top-4 sm:left-4 text-gray-500 hover:text-gray-700 text-2xl sm:text-3xl"
           type="button"
         >
           ×
         </button>
 
         <div className="text-center">
-          <div className="text-5xl mb-4">🎉</div>
+          <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">🎉</div>
           
-          <h2 className="text-2xl font-bold mb-4" style={{ color: '#D4AF37' }}>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4\" style={{ color: '#D4AF37' }}>
             הזמנתך נרשמה בהצלחה!
           </h2>
 
-          <div className="bg-gray-50 p-6 rounded-lg mb-4 text-right">
-            <p className="text-gray-700 mb-3">
+          <div className="bg-gray-50 p-4 sm:p-6 rounded-lg mb-3 sm:mb-4 text-right">
+            <p className="text-sm sm:text-base text-gray-700 mb-3">
               להשלמת הרכישה, אנא העבירו תשלום:
             </p>
             
@@ -44,7 +44,7 @@ export default function OrderSuccess({ paymentPhone, bookPrice, onClose }) {
             {/* Bit Payment Button */}
             <a
               href={bitPaymentUrl}
-              className="block w-full py-3 px-4 mb-3 rounded-lg font-bold text-lg transition-all"
+              className="block w-full py-2 sm:py-3 px-3 sm:px-4 mb-3 rounded-lg font-bold text-base sm:text-lg transition-all"
               style={{ 
                 backgroundColor: '#00A3E0',
                 color: 'white'
@@ -54,16 +54,19 @@ export default function OrderSuccess({ paymentPhone, bookPrice, onClose }) {
             </a>
 
             {/* QR Code */}
-            <div className="bg-white p-4 rounded-lg inline-block">
-              <p className="text-sm text-gray-600 mb-2">סרוק לתשלום</p>
-              <QRCode 
-                value={bitPaymentUrl}
-                size={180}
-                level="M"
-              />
+            <div className="bg-white p-3 sm:p-4 rounded-lg inline-block">
+              <p className="text-xs sm:text-sm text-gray-600 mb-2">סרוק לתשלום</p>
+              <div className="w-[150px] h-[150px] sm:w-[180px] sm:h-[180px]">
+                <QRCode 
+                  value={bitPaymentUrl}
+                  size={180}
+                  level="M"
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </div>
             </div>
 
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-xs text-gray-500 mt-2 sm:mt-3">
               או שלח ידנית בביט/פייבוקס למספר לעיל
             </p>
           </div>
