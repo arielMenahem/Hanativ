@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -12,6 +12,9 @@ export default async function handler(req, res) {
     if (!full_name || !email || !phone || !address || !city) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
+
+    // Connect to Neon database
+    const sql = neon(process.env.DATABASE_URL);
 
     // Insert order into database
     await sql`
