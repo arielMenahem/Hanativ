@@ -7,9 +7,11 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [paymentPhone, setPaymentPhone] = useState('');
+  const [bookPrice, setBookPrice] = useState('100');
 
-  const handleOrderSuccess = (phone) => {
+  const handleOrderSuccess = (phone, price) => {
     setPaymentPhone(phone);
+    setBookPrice(price);
     setShowForm(false);
     setOrderSuccess(true);
   };
@@ -58,6 +60,7 @@ function App() {
       {orderSuccess && (
         <OrderSuccess 
           paymentPhone={paymentPhone}
+          bookPrice={bookPrice}
           onClose={handleClose}
         />
       )}

@@ -39,7 +39,7 @@ export default function ShippingForm({ onClose, onSuccess }) {
       }
 
       const data = await response.json();
-      onSuccess(data.paymentPhone);
+      onSuccess(data.paymentPhone, data.bookPrice);
     } catch (err) {
       setError('אירעה שגיאה, אנא נסה שנית.');
       setLoading(false);
