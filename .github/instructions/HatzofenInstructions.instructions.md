@@ -22,7 +22,7 @@ src/
   index.css        ← Global styles + background image
   main.jsx
 public/
-  background1.png   ← Teal book-cover background image
+  background11.png   ← Teal book-cover background image
 api/
   create-order.js  ← (TO BE CREATED) Vercel serverless function
 .env               ← (TO BE CREATED) Environment variables
@@ -36,7 +36,7 @@ api/
 - **Language:** Hebrew UI labels throughout
 - **Primary color:** `#D4AF37` (gold) for headings and accents
 - **Font:** serif for titles
-- **Background:** `public/background.png` — full-screen cover, fixed attachment
+- **Background:** `public/background11.png` — full-screen cover, fixed attachment
 - **Site title (browser tab):** `HanativMA`
 
 ---
